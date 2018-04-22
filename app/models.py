@@ -41,7 +41,7 @@ class User(UserMixin,db.Model):
 
     def _repr_(self):
         return f'User {self.username}'
-        
+
 class Post(db.Model):
     """ List of pitches in each category """
 
@@ -66,6 +66,12 @@ class Post(db.Model):
         pitches = Post.query.filter_by(category_id=id).all()
         return posts
 
+    def delete_post(self):
+        '''deleting a post from the database'''
+        db.session.delete(self)
+        db.session.commit()
+
+    
 class Comments(db.Model):
     '''User comment model for each pitch '''
 
