@@ -6,4 +6,6 @@ This is a personal blogging web app where a user can create opinions and share h
 * Flask
 * Bootstrap
 * Python3.6
-* Flask_Script 
+* Flask_Script
+
+### This is the [link](https://github.com/markmurimi/blog-app) to my repository where you can install the app to your local machine. 
