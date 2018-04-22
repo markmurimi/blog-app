@@ -1,11 +1,23 @@
+import os
+
 class Config:
-    pass
+    """main configuration class"""
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://mark:mark123@localhost/blog'
+
+    SECRET_KEY = "mark123"
+    MAIL_SERVER = 'smtp.gmail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
 
 class ProdConfig(Config):
-    pass
+    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://mark:mark123@localhost/blog'
+
 
 class DevConfig(Config):
     DEBUG = True
 
-config_options ={"production":ProdConfig,"default":DevConfig}
-
+config_options ={
+    'development': DevConfig,
+    'production': ProdConfig
+}
