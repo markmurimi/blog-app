@@ -17,7 +17,7 @@ This is a personal blogging web app where a user can create opinions and share h
 * Open the terminal.
 * Open the folder from the terminal.
 * Run this command on the terminal $ python3.6 -m venv virtual (installing virtual environment).
-* Then run this $ source virtual/bin/activate or virtual/scripts/activate.
+* Then run this $ source virtual/bin/activate.
 * $ python3.6 -m pip install -r requirements.txt (installing all dependencies).
 * And finally this $ ./start.sh to run the app.
 
