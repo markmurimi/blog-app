@@ -48,10 +48,9 @@ class Post(db.Model):
     __tablename__ = 'posts'
 
     id = db.Column(db.Integer,primary_key = True)
-    content = db.Column(db.String)
-    category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
-    user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    comment = db.relationship("Comments", backref="posts", lazy = "dynamic")
+    title = db.Column(db.String)
+    post = db.Column(db.String(3000))
+    comment = db.relationship("Comment", backref="posts", lazy = "dynamic")
 
     def save_post(self):
         ''' Save the posts '''
@@ -71,9 +70,9 @@ class Post(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    
+    posts = Post.query.order_by(Blog.id.desc()).all() return posts
 class Comments(db.Model):
-    '''User comment model for each pitch '''
+    '''User comment model for each post'''
 
     __tablename__ = 'comments'
 
@@ -82,8 +81,7 @@ class Comments(db.Model):
     opinion = db.Column(db.String(255))
     time_posted = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    posts_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
-
+    posts_id = db.Column(db.Integer, db.ForeignKey("articles.id", ondelete='CASCADE'))
 
     def save_comment(self):
 
@@ -95,3 +93,13 @@ class Comments(db.Model):
         comment = Comments.query.order_by(
             Comments.time_posted.desc()).filter_by(posts_id=id).all()
         return comment
+
+    def delete_comment(cls, comment_id):
+        '''
+        Function that deletes a specific single comment from the comments table and database
+
+        Args:
+            comment_id : specific comment id
+        '''
+        comment = Comment.query.filter_by(id=comment_id).delete()
+        db.session.commit()
