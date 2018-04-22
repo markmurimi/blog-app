@@ -5,7 +5,15 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from sqlalchemy.sql import func
 
+@login_manager.user_loader
+def load_user(user_id):
 
+    @login_manager.user_loader
+    '''
+    This function queries the database and gets a user's id as the response to the query
+    '''
+
+    return User.query.get(int(user_id))
 
 class User(UserMixin,db.Model):
     """ class modelling the users """
