@@ -20,3 +20,7 @@ This is a personal blogging web app where a user can create opinions and share h
 * Then run this $ source virtual/bin/activate or virtual/scripts/activate.
 * $ python3.6 -m pip install -r requirements.txt (installing all dependencies).
 * And finally this $ ./start.sh to run the app.
+
+### License under [MIT]()
+#### Created by ***Mark Murimi***
+##### Copyright © 2018
