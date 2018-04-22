@@ -1,6 +1,8 @@
 from . import db
 from flask_login import UserMixin
 from . import login_manager
+from werkzeug.security import generate_password_hash, check_password_hash
+from datetime import datetime
 from sqlalchemy.sql import func
 
 
@@ -30,7 +32,7 @@ class Post(db.Model):
     content = db.Column(db.String)
     category_id = db.Column(db.Integer, db.ForeignKey("categories.id"))
     user_id = db.Column(db.Integer,db.ForeignKey("users.id"))
-    comment = db.relationship("Comments", backref="pitches", lazy = "dynamic")
+    comment = db.relationship("Comments", backref="posts", lazy = "dynamic")
 
     def save_post(self):
         ''' Save the posts '''
@@ -38,9 +40,33 @@ class Post(db.Model):
         db.session.commit()
 
     @classmethod
-    def clear_pitches(cls):
+    def clear_posts(cls):
         Post.all_posts.clear()
 
     def get_posts(id):
-        pitches = Pitch.query.filter_by(category_id=id).all()
-        return pitches
+        pitches = Post.query.filter_by(category_id=id).all()
+        return posts
+
+class Comments(db.Model):
+    '''User comment model for each pitch '''
+
+    __tablename__ = 'comments'
+
+    # add columns
+    id = db.Column(db. Integer, primary_key=True)
+    opinion = db.Column(db.String(255))
+    time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    posts_id = db.Column(db.Integer, db.ForeignKey("posts.id"))
+
+
+    def save_comment(self):
+
+        db.session.add(self)
+        db.session.commit()
+
+    @classmethod
+    def get_comments(self, id):
+        comment = Comments.query.order_by(
+            Comments.time_posted.desc()).filter_by(posts_id=id).all()
+        return comment
