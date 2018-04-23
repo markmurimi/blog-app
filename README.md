@@ -21,6 +21,6 @@ This is a personal blogging web app where a user can create opinions and share h
 * $ python3.6 -m pip install -r requirements.txt (installing all dependencies).
 * And finally this $ ./start.sh to run the app.
 
-### License under [MIT]()
+### License under [MIT](https://github.com/markmurimi/blog-app/blob/master/LICENSE)
 #### Created by ***Mark Murimi***
 ##### Copyright © 2018
