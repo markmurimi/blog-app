@@ -7,12 +7,6 @@ from sqlalchemy.sql import func
 
 @login_manager.user_loader
 def load_user(user_id):
-
-    @login_manager.user_loader
-    '''
-    This function queries the database and gets a user's id as the response to the query
-    '''
-
     return User.query.get(int(user_id))
 
 class User(UserMixin,db.Model):
@@ -65,12 +59,15 @@ class Post(db.Model):
         pitches = Post.query.filter_by(category_id=id).all()
         return posts
 
+        posts = Post.query.order_by(Post.id.desc()).all()
+        return posts
+
     def delete_post(self):
         '''deleting a post from the database'''
         db.session.delete(self)
         db.session.commit()
 
-    posts = Post.query.order_by(Blog.id.desc()).all() return posts
+
 class Comments(db.Model):
     '''User comment model for each post'''
 
