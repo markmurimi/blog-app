@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+
+<body style="background-image:Url('./static/images/cool.png')">
+    {% extends 'base.html' %} {% import 'macros.html' as macro %}
+    {% block content %}
+
+    <title> {{ title }} </title>
+    <div class="container">
+        <h1 style="text-align: center;color:white;"><b>BLOG POSTS</b></h1>
+        <hr>
+        <ul class="list-unstyled" style="padding-right: 200px;">
+            {{ macro.displayPostList(posts)}}
+        </ul>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

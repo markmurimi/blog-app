@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blog App</title>
+
+</head>
+
+<body>
+    {% extends 'base.html' %} {% import 'macros.html' as macro %}
+     {% block content %}
+    <div class="container">
+
+        <h3 class="index-header">{{article.title}}</h3>
+        <hr>
+        <p>{{article.blog}}</p>
+        <div class="col-md-12">
+            <h3 class="comment-create">
+                <a href="/post/comment/new/{{article.id}}">Add Comment</a>
+            </h3>
+        </div>
+        {% if comments %} {% for comment in comments %}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <hr>
+            <p>{{comment.opinion}} </p>
+        </div>
+        {% endfor %} {% else %}
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 ">
+            <hr>
+            <p>No comments</p>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+</body></html>

@@ -1,26 +1,26 @@
 from . import db
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from . import login_manager
-from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from sqlalchemy.sql import func
+
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-class User(UserMixin,db.Model):
-    """ class modelling the users """
+class User(UserMixin, db.Model):
+    '''class modelling the user'''
 
-    __tablename__='users'
+    __tablename__ = 'users'
 
-    #create the columns
-    id = db.Column(db.Integer,primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(255))
-    email = db.Column(db.String(255),unique = True, index =True)
-    password_hash = db.Column(db.String(255))
+    email = db.Column(db.String(255), unique=True, index=True)
+    pasword_hash = db.Column(db.String(255))
     pass_secure = db.Column(db.String(255))
-    comment = db.relationship("Comments", backref="user", lazy = "dynamic")
+    comment = db.relationship("Comment", backref='user', lazy='dynamic')
 
     @property
     def password(self):
@@ -33,70 +33,65 @@ class User(UserMixin,db.Model):
     def verify_password(self, password):
         return check_password_hash(self.pass_secure, password)
 
-    def _repr_(self):
+    def __repr__(self):
         return f'User {self.username}'
 
-class Post(db.Model):
-    """ List of pitches in each category """
 
-    __tablename__ = 'posts'
+class Blog(db.Model):
+    __tablename__ = 'articles'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255))
+    blog = db.Column(db.String(3000))
+    comment = db.relationship("Comment", backref='article', lazy='dynamic')
 
-    id = db.Column(db.Integer,primary_key = True)
-    title = db.Column(db.String)
-    post = db.Column(db.String(3000))
-    comment = db.relationship("Comment", backref="posts", lazy = "dynamic")
-
-    def save_post(self):
-        ''' Save the posts '''
+    def save_blog(self):
+        '''
+        save a blog in the database
+        '''
         db.session.add(self)
         db.session.commit()
 
-    @classmethod
-    def clear_posts(cls):
-        Post.all_posts.clear()
-
-    def get_posts(id):
-        pitches = Post.query.filter_by(category_id=id).all()
-        return posts
-
-        posts = Post.query.order_by(Post.id.desc()).all()
-        return posts
-
-    def delete_post(self):
-        '''deleting a post from the database'''
+    def delete_blog(self):
+        '''delete a given blog from the database'''
         db.session.delete(self)
         db.session.commit()
 
+    @classmethod
+    def get_posts(cls):
+        '''
+        Function that queries the Posts Table in the database and returns all the information from the Posts Table
 
-class Comments(db.Model):
-    '''User comment model for each post'''
+        Returns:
+            posts : all the information in the posts table
+        '''
+        posts = Blog.query.all()
+        return posts
 
+
+class Comment(db.Model):
     __tablename__ = 'comments'
 
-    # add columns
-    id = db.Column(db. Integer, primary_key=True)
-    opinion = db.Column(db.String(255))
-    time_posted = db.Column(db.DateTime, default=datetime.utcnow)
+    id = db.Column(db.Integer, primary_key=True)
+    opinion = db.Column(db.String)
+    articles_id = db.Column(db.Integer, db.ForeignKey(
+        "articles.id", ondelete='CASCADE'))
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    posts_id = db.Column(db.Integer, db.ForeignKey("articles.id", ondelete='CASCADE'))
 
     def save_comment(self):
-
+        '''
+        Function that saves a new comment given as feedback to a post
+        '''
         db.session.add(self)
         db.session.commit()
 
     @classmethod
     def get_comments(self, id):
-        comment = Comments.query.order_by(
-            Comments.time_posted.desc()).filter_by(posts_id=id).all()
+        comment = Comment.query.filter_by(articles_id=id).all()
         return comment
 
     def delete_comment(cls, comment_id):
         '''
         Function that deletes a specific single comment from the comments table and database
-
-        Args:
-            comment_id : specific comment id
         '''
         comment = Comment.query.filter_by(id=comment_id).delete()
         db.session.commit()

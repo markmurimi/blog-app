@@ -1,17 +1,14 @@
 <div class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
+    <div class="jumbotron"style="background-color:black;color:white;">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/" style=" font-size:25px"></a>
-
+            
+            <a class="navbar-brand" href="/" style=" font-size:30px">Welcome To My Blog App</a>
+        <ul class="nav navbar-nav navbar-left">
+            <li><a href="/new/blog" style="font-size:20px;">Create Blog</a></li>
+        </ul>
         </div>
 
-        <div class="navbar-collapse collapse" style="background-color: black">
+        <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 {% if current_user.is_authenticated %}
 
